@@ -15,7 +15,7 @@ function beep (time) {
     else if ( time == 5000 )
     {
         new Sound('beep5000.wav').play();
-        console.log("Current time is " + Date.now());
+        //console.log("Current time is " + Date.now());
     }
     else {} // Does nothing
 }
