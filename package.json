@@ -1,0 +1,12 @@
+{
+  "name": "Pips",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node .pip"
+  },
+  "dependencies": {
+    "node-aplay": "^1.0.3",
+    "sleep": "^5.1.0"
+  }
+}
