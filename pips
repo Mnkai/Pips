@@ -2,59 +2,75 @@
 
 var sleep = require('sleep');
 var Sound = require('node-aplay');
+var beep1000Sound = new Sound('beep1000.wav');
+var beep5000Sound = new Sound('beep5000.wav');
 
-var precision = 0.001; // Seconds
+var precision = 0.01; // Seconds
 var offset = -800; // Millisecond
 
-function beep (time) {
-    if (time == 1000)
-    {
-        new Sound('beep1000.wav').play();
+var unixMillis = Date.now();
+var unixSecond;
+var unixFakeMillis;
+var unixFakeMillisPrecisionMinutes;
 
+
+function beep(time) {
+    if (time == 1000) {
+        beep1000Sound.play();
     }
-    else if ( time == 5000 )
-    {
-        new Sound('beep5000.wav').play();
-        //console.log("Current time is " + Date.now());
+    else if (time == 5000) {
+        beep5000Sound.play();
+        console.log("Current time is " + (Date.now() + offset));
     }
-    else {} // Does nothing
+    else {
+    } // Does nothing
 }
 
-while (true)
+function recalculateTime ()
 {
-  var unixMillis = Date.now();
+    unixSecond = Math.floor(unixMillis / 1000);
+    unixFakeMillis = unixSecond * 1000;
+    unixFakeMillisPrecisionMinutes = Math.floor(unixSecond / 60) * 1000 * 60;
+}
 
-  unixMillis = unixMillis + offset;
+recalculateTime();
 
-  var unixSecond = Math.floor(unixMillis/1000);
-  var unixFakeMillis = unixSecond*1000;
-  var unixFakeMillisPrecisionMinutes = Math.floor(unixSecond/60)*1000 * 60;
+while (true) {
 
-  var alreadyDid = false;
+    var alreadyDid = false;
 
-  if ( (unixMillis - unixFakeMillis) < precision*1000 ) // In precision
-  {
-    if ( alreadyDid ) // In case of system time mess up
+    unixMillis = Date.now()+offset;
+    recalculateTime();
+
+    if ((unixMillis - unixFakeMillis) < precision * 1000) // In precision
     {
-      alreadyDid = false;
-      continue;
+        if (alreadyDid) // In case of system time mess up
+        {
+            alreadyDid = false;
+
+            sleep.msleep(precision * 1000);
+            continue;
+        }
+        else {
+            alreadyDid = false;
+
+            if ((unixMillis - unixFakeMillisPrecisionMinutes) / 1000 >= 1) {
+                beep(1000);
+                alreadyDid = true;
+
+                sleep.msleep(precision * 1000);
+            }
+            else {
+                beep(5000);
+                alreadyDid = true;
+
+                sleep.msleep(precision * 1000);
+            }
+        }
     }
     else
     {
-      alreadyDid = false;
-
-      if ( (unixMillis - unixFakeMillisPrecisionMinutes) / 1000 >= 1 )
-      {
-        beep (1000);
-        alreadyDid = true;
-        sleep.msleep(precision*1000);
-      }
-      else
-      {
-        beep (5000);
-        alreadyDid = true;
-        sleep.msleep(precision*1000);
-      }
+        sleep.msleep(precision * 1000);
+        continue;
     }
-  }
 }
