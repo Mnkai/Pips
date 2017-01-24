@@ -4,7 +4,7 @@ var sleep = require('sleep');
 var Sound = require('node-aplay');
 
 var precision = 0.001; // Seconds
-var offset = 200; // Millisecond
+var offset = -800; // Millisecond
 
 function beep (time) {
     if (time == 1000)
