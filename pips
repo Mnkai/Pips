@@ -4,6 +4,7 @@ var sleep = require('sleep');
 var Sound = require('node-aplay');
 
 var precision = 0.001; // Seconds
+var offset = 200; // Millisecond
 
 function beep (time) {
     if (time == 1000)
@@ -22,6 +23,9 @@ function beep (time) {
 while (true)
 {
   var unixMillis = Date.now();
+
+  unixMillis = unixMillis + offset;
+
   var unixSecond = Math.floor(unixMillis/1000);
   var unixFakeMillis = unixSecond*1000;
   var unixFakeMillisPrecisionMinutes = Math.floor(unixSecond/60)*1000 * 60;
