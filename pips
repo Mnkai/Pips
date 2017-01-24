@@ -8,7 +8,7 @@ var beep5000Sound = new Sound('beep5000.wav');
 var precision = 0.01; // Seconds
 var offset = 0; // Millisecond
 
-var unixMillis = Date.now();
+var unixMillis;
 var unixSecond;
 var unixFakeMillis;
 var unixFakeMillisPrecisionMinutes;
@@ -42,7 +42,7 @@ while (true) {
     unixMillis = Date.now()+offset;
     recalculateTime();
 
-    if ((unixMillis - unixFakeMillis) < precision * 1000) // In precision
+    if ((unixMillis - unixFakeMillis) <= precision * 1000) // In precision
     {
         if (alreadyDid) // In case of system time mess up
         {
