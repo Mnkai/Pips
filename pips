@@ -6,7 +6,7 @@ var beep1000Sound = new Sound('beep1000.wav');
 var beep5000Sound = new Sound('beep5000.wav');
 
 var precision = 0.01; // Seconds
-var offset = -800; // Millisecond
+var offset = 0; // Millisecond
 
 var unixMillis = Date.now();
 var unixSecond;
